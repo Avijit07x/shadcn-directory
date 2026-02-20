@@ -1,3 +1,5 @@
+import { AuthProvider } from "@/components/AuthProvider";
+import { Navbar } from "@/components/Navbar";
 import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -14,8 +16,55 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ShadCN Directory",
-  description: "Curated collection of components, templates, and UI resources built with ShadCN",
+  metadataBase: new URL("https://shadcn-dir.vercel.app"),
+  title: {
+    default: "ShadCN Directory — Curated UI Component Archive",
+    template: "%s | ShadCN Directory",
+  },
+  description:
+    "A definitive catalog of premium components, templates, and UI kits built with shadcn/ui for modern web experiences.",
+  keywords: [
+    "shadcn",
+    "shadcn ui",
+    "ui components",
+    "react components",
+    "next.js templates",
+    "tailwind css",
+    "ui library",
+    "component library",
+    "design system",
+    "open source",
+  ],
+  authors: [{ name: "Avijit" }],
+  creator: "Avijit",
+  publisher: "ShadCN Directory",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://shadcn-dir.vercel.app",
+    siteName: "ShadCN Directory",
+    title: "ShadCN Directory — Curated UI Component Archive",
+    description:
+      "A definitive catalog of premium components, templates, and UI kits built with shadcn/ui for modern web experiences.",
+    images: [
+      {
+        url: "/opengraph-image.svg",
+        width: 1200,
+        height: 630,
+        alt: "ShadCN Directory Preview",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ShadCN Directory — Curated UI Component Archive",
+    description:
+      "A definitive catalog of premium components, templates, and UI kits built with shadcn/ui for modern web experiences.",
+    images: ["/opengraph-image.svg"],
+  },
+  alternates: {
+    canonical: "https://shadcn-dir.vercel.app",
+  },
 };
 
 export default function RootLayout({
@@ -28,8 +77,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-background text-foreground`}
       >
-        {children}
-        <Toaster theme="dark" />
+        <AuthProvider>
+          <div className="flex flex-col min-h-screen relative pb-20">
+            <Navbar />
+            {children}
+          </div>
+          <Toaster theme="dark" />
+        </AuthProvider>
       </body>
     </html>
   );

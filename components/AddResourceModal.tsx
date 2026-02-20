@@ -1,6 +1,8 @@
 "use client";
 
-import { Loader2, Plus } from "lucide-react";
+import { addResourceAction } from "@/app/actions";
+import { useUIStore } from "@/lib/store";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -12,13 +14,12 @@ import {
     DialogDescription,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function AddResourceDialog() {
-  const [open, setOpen] = useState(false);
+export function AddResourceModal() {
+  const { isAddModalOpen, setAddModalOpen } = useUIStore();
   const [url, setUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -41,46 +42,31 @@ export function AddResourceDialog() {
     setIsLoading(true);
 
     try {
-      const res = await fetch("/api/resources", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ url }),
-      });
+      const result = await addResourceAction(url);
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "Failed to add resource");
+      if (result.error) {
+        throw new Error(result.error);
       }
 
       toast.success("Resource added successfully!");
-      setOpen(false);
+      setAddModalOpen(false);
       setUrl("");
       router.refresh();
       
-    } catch (error: any) {
-      toast.error(error.message || "An error occurred while adding");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "An error occurred while adding");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="gap-2 font-medium">
-          <Plus className="h-4 w-4" />
-          <span className="hidden sm:inline-block">Add Resource</span>
-          <span className="sm:hidden">Add</span>
-        </Button>
-      </DialogTrigger>
+    <Dialog open={isAddModalOpen} onOpenChange={setAddModalOpen}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Add a new resource</DialogTitle>
           <DialogDescription>
-            Enter the URL of a ShadCN-related library, tool, or template. We'll automatically fetch the details.
+            Enter the URL of a ShadCN-related library, tool, or template. We&apos;ll automatically fetch the details.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 py-4">

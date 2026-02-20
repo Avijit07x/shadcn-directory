@@ -1,4 +1,4 @@
-import mongoose, { Document, Model, Schema } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IResource extends Document {
   url: string;
@@ -6,6 +6,12 @@ export interface IResource extends Document {
   description: string;
   image: string;
   domain: string;
+  addedBy?: {
+    name: string;
+    image: string;
+    email: string;
+  };
+  status: 'pending' | 'approved' | 'rejected';
   createdAt: Date;
 }
 
@@ -33,12 +39,18 @@ const ResourceSchema: Schema<IResource> = new Schema(
       type: String,
       default: '',
     },
+    addedBy: {
+      name: { type: String, required: true },
+      image: { type: String, required: true },
+      email: { type: String, required: true },
+    },
+    status: {
+      type: String,
+      enum: ['pending', 'approved', 'rejected'],
+      default: 'pending'
+    }
   },
   { timestamps: true }
 );
 
-// Prevent re-compilation of the model if it already exists
-const Resource: Model<IResource> =
-  mongoose.models.Resource || mongoose.model<IResource>('Resource', ResourceSchema);
-
-export default Resource;
+export default mongoose.models.Resource || mongoose.model<IResource>("Resource", ResourceSchema);

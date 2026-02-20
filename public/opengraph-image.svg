@@ -1,0 +1,58 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Dark Background -->
+    <rect id="bg" width="1200" height="630" fill="#09090b" />
+    
+    <!-- Pattern 1: Grid -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#27272a" stroke-width="1" opacity="0.5"/>
+    </pattern>
+    
+    <!-- Pattern 2: Dots -->
+    <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.5" fill="#3f3f46" opacity="0.4" />
+    </pattern>
+  </defs>
+
+  <!-- Draw Background -->
+  <use href="#bg" />
+  <rect width="1200" height="630" fill="url(#grid)" />
+  
+  <!-- Outer Frame -->
+  <rect x="40" y="40" width="1120" height="550" fill="none" stroke="#27272a" stroke-width="2" />
+  
+  <!-- Decorative Corners for Frame -->
+  <path d="M 30 40 L 50 40 M 40 30 L 40 50" stroke="#ffffff" stroke-width="2" opacity="0.5" />
+  <path d="M 1150 40 L 1170 40 M 1160 30 L 1160 50" stroke="#ffffff" stroke-width="2" opacity="0.5" />
+  <path d="M 30 590 L 50 590 M 40 580 L 40 600" stroke="#ffffff" stroke-width="2" opacity="0.5" />
+  <path d="M 1150 590 L 1170 590 M 1160 580 L 1160 600" stroke="#ffffff" stroke-width="2" opacity="0.5" />
+
+  <!-- Inner Box -->
+  <rect x="100" y="100" width="1000" height="430" fill="#000000" stroke="#27272a" stroke-width="1" />
+  <rect x="100" y="100" width="1000" height="430" fill="url(#dots)" />
+  
+  <!-- Top Left Badge -->
+  <rect x="100" y="100" width="180" height="40" fill="#ffffff" />
+  <text x="190" y="125" font-family="monospace" font-size="14" font-weight="bold" fill="#000000" text-anchor="middle" letter-spacing="3">INDEX // 001</text>
+
+  <!-- Main Typography -->
+  <text x="160" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="110" font-weight="900" fill="#ffffff" letter-spacing="-3">SHADCN</text>
+  <text x="160" y="380" font-family="system-ui, -apple-system, sans-serif" font-size="110" font-weight="900" fill="#a1a1aa" letter-spacing="-3">DIRECTORY<tspan fill="#ffffff">.</tspan></text>
+  
+  <!-- Subtitle -->
+  <text x="160" y="460" font-family="monospace" font-size="22" font-weight="normal" fill="#a1a1aa" letter-spacing="1">A definitive catalog of premium UI components</text>
+  <text x="160" y="495" font-family="monospace" font-size="22" font-weight="normal" fill="#a1a1aa" letter-spacing="1">crafted for modern web experiences.</text>
+
+  <!-- Floating Abstract Geometry (Right side) -->
+  <g transform="translate(800, 180)">
+    <rect width="200" height="200" fill="none" stroke="#27272a" stroke-width="2" />
+    <path d="M 0 100 L 200 100 M 100 0 L 100 200" stroke="#27272a" stroke-width="2" stroke-dasharray="4 4" />
+    <path d="M 50 50 L 150 150 M 50 150 L 150 50" stroke="#3f3f46" stroke-width="2" />
+    <circle cx="100" cy="100" r="50" fill="none" stroke="#ffffff" stroke-width="4" />
+    <rect x="85" y="85" width="30" height="30" fill="#ffffff" />
+  </g>
+
+  <!-- Bottom Right URL marking -->
+  <rect x="800" y="480" width="200" height="50" fill="#09090b" stroke="#3f3f46" stroke-width="1" />
+  <text x="900" y="511" font-family="monospace" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="2">OPEN ARCHIVE</text>
+</svg>

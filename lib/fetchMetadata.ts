@@ -19,7 +19,6 @@ export async function fetchMetadata(url: string): Promise<MetadataResult> {
     if (result.ogImage && result.ogImage.length > 0) {
       image = result.ogImage[0].url;
       
-      // Handle relative image paths
       if (image.startsWith('/')) {
         image = `${parsedUrl.protocol}//${parsedUrl.host}${image}`;
       }
@@ -34,7 +33,6 @@ export async function fetchMetadata(url: string): Promise<MetadataResult> {
   } catch (error) {
     console.error(`Error fetching metadata for ${url}:`, error);
     
-    // Fallback if scraping fails
     try {
       const parsedUrl = new URL(url);
       const domain = parsedUrl.hostname.replace('www.', '');

@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+  <img src="./app/icon.svg" width="120" alt="Shadcn Directory Logo" />
+  <h1>SHADCN // DIRECTORY.</h1>
+  <p>An open-source, definitive catalog of premium components, templates, and UI kits crafted for modern web experiences.</p>
 
-## Getting Started
+  <img src="./public/opengraph-image.svg" alt="Shadcn Directory Preview" style="max-width: 100%; border-radius: 8px;" />
+</div>
 
-First, run the development server:
+## Overview
+
+**ShadCN Directory** is a beautifully designed, high-performance web directory product engineered for discovering and sharing the best UI components, templates, and boilerplates built around the `shadcn/ui` ecosystem.
+
+Designed with a strict, monochrome **Swiss Minimalist aesthetic**, it operates as a turn-key platform for developers to find premium building blocks for their next product, while also serving as a robust, scalable codebase that can be deployed as-is or customized for your own directory needs.
+
+## Product Features
+
+- **Curated Archives**: Browse a growing list of ShadCN resources with automatic OpenGraph metadata extraction.
+- **Minimalist Aesthetic**: Sharp, editorial, and brutalist monochrome UI with carefully composed typography.
+- **Authentication**: Secure Google OAuth integration via NextAuth.
+- **Admin Dashboard**: Comprehensive moderation panel with metrics, tabbed filtering, and powerful **Bulk Selection Actions** (Approve, Reject, Delete).
+- **User Profile**: A dedicated `/profile` section for users to manage their submissions and track status.
+- **Rate Limiting**: Built-in API rate-limiting to protect server actions and prevent spam.
+
+## Tech Stack
+
+- **Framework**: [Next.js](https://nextjs.org/) (App Router, Server Actions)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Components**: [Shadcn UI](https://ui.shadcn.com/), [Lucide React](https://lucide.dev/)
+- **Database**: [MongoDB](https://www.mongodb.com/) & Mongoose
+- **Authentication**: [NextAuth.js](https://next-auth.js.org/)
+- **Notifications**: [Sonner](https://sonner.emilkowal.ski/)
+
+## Quick Start Guide
+
+### Prerequisites
+
+Ensure you have [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io/) installed.
+
+### 1. Clone & Install
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/avijit07x/shadcn-directory.git
+cd shadcn-directory
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Configure Environment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a `.env.local` file in the root directory and configure the following variables:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+# Database
+MONGODB_URI=your_mongodb_connection_string
 
-## Learn More
+# Authentication (NextAuth)
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your_nextauth_secret_random_string
 
-To learn more about Next.js, take a look at the following resources:
+# Google OAuth Credentials
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Admin Access
+# Comma-separated list of emails that should have admin access
+ADMIN_EMAILS=admin@example.com,moderator@example.com
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 3. Launch Development Server
 
-## Deploy on Vercel
+```bash
+pnpm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The application will be available at `http://localhost:3000`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Architecture & Structure
+
+- `app/`: Next.js App Router pages (Home, Admin, User Profiles, API routes).
+- `components/`: Reusable React components including the `DirectoryGrid` and `AdminTable`.
+- `lib/`: Core utilities (MongoDB connection, Rate Limiting, OpenGraph Scraper).
+- `models/`: Mongoose Database Models.
+- `public/`: Static graphical assets like the OpenGraph preview image.
+
+## Open Source License
+
+This product is open-source and available under the [MIT License](LICENSE). Contributions, feature requests, and bug reports are welcome as we scale the product.

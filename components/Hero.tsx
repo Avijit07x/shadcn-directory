@@ -4,8 +4,6 @@ export function Hero() {
   return (
     <section className="relative w-full border-x border-t border-border mt-8 mb-16 overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[50vh] md:min-h-[60vh] 2xl:min-h-[25vh]">
-        
-        {/* Left Column - Large Text */}
         <div className="lg:col-span-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-border p-6 md:p-10 lg:p-14">
           <div className="flex items-center gap-3">
             <div className="h-2 w-2 bg-foreground" />
@@ -15,14 +13,12 @@ export function Hero() {
           </div>
           
           <div className="mt-16 lg:mt-0 pt-8 lg:pt-12 w-full">
-            <h1 className="text-[14vw] sm:text-[11vw] lg:text-[7.5rem] xl:text-[8.5rem] 2xl:text-[10rem] min-[1800px]:text-[12rem] font-bold tracking-tighter uppercase leading-[0.8] text-foreground w-full break-words">
+            <h1 className="text-[14vw] sm:text-[11vw] lg:text-[7.5rem] xl:text-[8.5rem] 2xl:text-[10rem] min-[1800px]:text-[12rem] font-bold tracking-tighter uppercase leading-[0.8] text-foreground w-full wrap-break-word">
               SHADCN <br />
               <span className="text-muted-foreground/40">ARCHIVE</span>
             </h1>
           </div>
         </div>
-        
-        {/* Right Column - Info */}
         <div className="lg:col-span-4 flex flex-col justify-between p-6 md:p-10 lg:p-14 bg-muted/20">
           <div className="flex justify-end mb-12 lg:mb-0">
             <span className="font-mono text-[10px] text-muted-foreground uppercase tracking-widest border border-border px-2 py-1 bg-background">

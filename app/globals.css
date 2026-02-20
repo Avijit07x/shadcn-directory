@@ -123,6 +123,9 @@
   body {
     @apply bg-background text-foreground;
   }
+  button{
+    @apply cursor-pointer
+  }
 
   /* Custom Scrollbar Styles for the Swiss Minimalist Aesthetic */
   ::-webkit-scrollbar {

@@ -1,3 +1,5 @@
+"use client";
+
 import { IResource } from "@/models/Resource";
 import { ArrowDownRight } from "lucide-react";
 
@@ -14,7 +16,21 @@ export function ResourceCard({ resource }: ResourceCardProps) {
       className="block group h-full relative focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground focus-visible:ring-offset-0"
     >
       <div className="h-full flex flex-col bg-background border-r border-b border-border transition-all duration-300 group-hover:bg-foreground group-hover:text-background group-hover:z-10 relative">
-        <div className="relative aspect-[16/9] w-full overflow-hidden bg-muted border-b border-border group-hover:border-background/20">
+        <div className="relative aspect-video w-full overflow-hidden bg-muted border-b border-border group-hover:border-background/20">
+          
+          {resource.addedBy && (
+            <div className="absolute top-3 left-3 z-20 flex items-center gap-2 bg-background/80 backdrop-blur-sm px-2 py-1.5 rounded-full border border-border shadow-sm">
+              <img 
+                src={resource.addedBy.image || "https://placehold.co/100x100"} 
+                alt={resource.addedBy.name} 
+                className="w-5 h-5 rounded-full"
+              />
+              <span className="text-[10px] font-medium tracking-wide truncate max-w-[120px] text-foreground">
+                {resource.addedBy.name}
+              </span>
+            </div>
+          )}
+
           {resource.image ? (
             <img
               src={resource.image}
