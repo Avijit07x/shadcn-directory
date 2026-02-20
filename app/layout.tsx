@@ -1,6 +1,7 @@
 import { AuthProvider } from "@/components/AuthProvider";
 import { Navbar } from "@/components/Navbar";
 import { Toaster } from "@/components/ui/sonner";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -18,7 +19,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://shadcn-dir.vercel.app"),
   title: {
-    default: "ShadCN Directory — Curated UI Component Archive",
+    default: "ShadCN Directory - Curated UI Component Archive",
     template: "%s | ShadCN Directory",
   },
   description:
@@ -43,7 +44,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://shadcn-dir.vercel.app",
     siteName: "ShadCN Directory",
-    title: "ShadCN Directory — Curated UI Component Archive",
+    title: "ShadCN Directory - Curated UI Component Archive",
     description:
       "A definitive catalog of premium components, templates, and UI kits built with shadcn/ui for modern web experiences.",
     images: [
@@ -57,7 +58,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ShadCN Directory — Curated UI Component Archive",
+    title: "ShadCN Directory - Curated UI Component Archive",
     description:
       "A definitive catalog of premium components, templates, and UI kits built with shadcn/ui for modern web experiences.",
     images: ["/opengraph-image.png"],
@@ -84,6 +85,7 @@ export default function RootLayout({
           </div>
           <Toaster theme="dark" />
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );
