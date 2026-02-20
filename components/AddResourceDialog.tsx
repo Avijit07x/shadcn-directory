@@ -72,7 +72,8 @@ export function AddResourceDialog() {
       <DialogTrigger asChild>
         <Button className="gap-2 font-medium">
           <Plus className="h-4 w-4" />
-          Add Resource
+          <span className="hidden sm:inline-block">Add Resource</span>
+          <span className="sm:hidden">Add</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">

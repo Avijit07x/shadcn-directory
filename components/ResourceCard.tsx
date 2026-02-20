@@ -19,7 +19,7 @@ export function ResourceCard({ resource }: ResourceCardProps) {
             <img
               src={resource.image}
               alt={resource.title || resource.domain}
-              className="object-cover w-full h-full transition-all duration-500 grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105"
+              className="object-cover w-full h-full transition-all duration-500  opacity-80 group-hover:opacity-100 group-hover:scale-105"
               onError={(e) => {
                 (e.target as HTMLImageElement).src = 'https://placehold.co/1200x630/000000/ffffff?text=NO+IMAGE&font=mono';
               }}

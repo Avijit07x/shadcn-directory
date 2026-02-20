@@ -3,7 +3,7 @@ import { ArrowDownRight } from "lucide-react";
 export function Hero() {
   return (
     <section className="relative w-full border-x border-t border-border mt-8 mb-16 overflow-hidden">
-      <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[50vh] md:min-h-[60vh]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[50vh] md:min-h-[60vh] 2xl:min-h-[25vh]">
         
         {/* Left Column - Large Text */}
         <div className="lg:col-span-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-border p-6 md:p-10 lg:p-14">
