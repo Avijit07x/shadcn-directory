@@ -12,23 +12,54 @@
 
 Designed with a strict, monochrome **Swiss Minimalist aesthetic**, it operates as a turn-key platform for developers to find premium building blocks for their next product, while also serving as a robust, scalable codebase that can be deployed as-is or customized for your own directory needs.
 
-## Product Features
+## How to Add a Resource
 
-- **Curated Archives**: Browse a growing list of ShadCN resources with automatic OpenGraph metadata extraction.
-- **Minimalist Aesthetic**: Sharp, editorial, and brutalist monochrome UI with carefully composed typography.
-- **Authentication**: Secure Google OAuth integration via NextAuth.
-- **Admin Dashboard**: Comprehensive moderation panel with metrics, tabbed filtering, and powerful **Bulk Selection Actions** (Approve, Reject, Delete).
-- **User Profile**: A dedicated `/profile` section for users to manage their submissions and track status.
-- **Rate Limiting**: Built-in API rate-limiting to protect server actions and prevent spam.
+Adding a new ShadCN resource to the directory is simple:
+
+1. **Sign In** — Click the sign-in button and authenticate with your Google account.
+2. **Open the Add Dialog** — Click the **"+ Add Resource"** button on the homepage.
+3. **Paste the URL** — Enter the URL of the ShadCN component library, template, or UI kit you want to share. The app will automatically scrape its OpenGraph metadata (title, description, image).
+4. **Submit** — Hit submit. Your resource is now sent for review.
+5. **Admin Review** — An admin will approve or reject the submission. You'll see its status on your **Profile** page (`/profile`).
+6. **Live!** — Once approved, the resource appears on the public directory for everyone to discover.
+
+## Contributing
+
+Contributions are welcome! Here's how to get started:
+
+1. **Fork** the repository.
+2. **Clone** your fork locally:
+   ```bash
+   git clone https://github.com/<your-username>/shadcn-directory.git
+   cd shadcn-directory
+   pnpm install
+   ```
+3. **Create a branch** for your changes:
+   ```bash
+   git checkout -b feat/your-feature-name
+   ```
+4. **Set up environment** — Copy `.env.example` or create a `.env.local` with the required variables (see [Quick Start Guide](#quick-start-guide) below).
+5. **Make your changes** and test locally with `pnpm run dev`.
+6. **Commit & Push**:
+   ```bash
+   git add .
+   git commit -m "feat: describe your change"
+   git push origin feat/your-feature-name
+   ```
+7. **Open a Pull Request** against the `main` branch with a clear description of what you changed and why.
+
+> **Note:** Please keep PRs focused on a single change. Bug fixes, new features, and documentation improvements are all welcome.
 
 ## Tech Stack
 
-- **Framework**: [Next.js](https://nextjs.org/) (App Router, Server Actions)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **Components**: [Shadcn UI](https://ui.shadcn.com/), [Lucide React](https://lucide.dev/)
-- **Database**: [MongoDB](https://www.mongodb.com/) & Mongoose
-- **Authentication**: [NextAuth.js](https://next-auth.js.org/)
-- **Notifications**: [Sonner](https://sonner.emilkowal.ski/)
+| Technology | Purpose |
+|---|---|
+| [Next.js](https://nextjs.org/) | Framework (App Router, Server Actions) |
+| [Tailwind CSS](https://tailwindcss.com/) | Styling |
+| [Shadcn UI](https://ui.shadcn.com/) | UI Components |
+| [MongoDB](https://www.mongodb.com/) & Mongoose | Database |
+| [NextAuth.js](https://next-auth.js.org/) | Authentication (Google OAuth) |
+| [Sonner](https://sonner.emilkowal.ski/) | Toast Notifications |
 
 ## Quick Start Guide
 
@@ -73,14 +104,16 @@ pnpm run dev
 
 The application will be available at `http://localhost:3000`.
 
-## Architecture & Structure
+## Project Structure
 
-- `app/`: Next.js App Router pages (Home, Admin, User Profiles, API routes).
-- `components/`: Reusable React components including the `DirectoryGrid` and `AdminTable`.
-- `lib/`: Core utilities (MongoDB connection, Rate Limiting, OpenGraph Scraper).
-- `models/`: Mongoose Database Models.
-- `public/`: Static graphical assets like the OpenGraph preview image.
+| Directory | Description |
+|---|---|
+| `app/` | Next.js App Router pages & API routes |
+| `components/` | Reusable React components |
+| `lib/` | Utilities (DB connection, rate limiting, OG scraper) |
+| `models/` | Mongoose database models |
+| `public/` | Static assets |
 
-## Open Source License
+## License
 
-This product is open-source and available under the [MIT License](LICENSE). Contributions, feature requests, and bug reports are welcome as we scale the product.
+[MIT](LICENSE)
