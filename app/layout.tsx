@@ -1,4 +1,5 @@
 import { AuthProvider } from "@/components/AuthProvider";
+import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/next";
@@ -79,9 +80,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-background text-foreground`}
       >
         <AuthProvider>
-          <div className="flex flex-col min-h-screen relative pb-20">
+          <div className="flex flex-col min-h-screen relative">
             <Navbar />
             {children}
+            <Footer />
           </div>
           <Toaster theme="dark" />
         </AuthProvider>
