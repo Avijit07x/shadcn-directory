@@ -48,7 +48,7 @@ export const metadata: Metadata = {
       "A definitive catalog of premium components, templates, and UI kits built with shadcn/ui for modern web experiences.",
     images: [
       {
-        url: "/opengraph-image.svg",
+        url: "/opengraph-image.png",
         width: 1200,
         height: 630,
         alt: "ShadCN Directory Preview",
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     title: "ShadCN Directory — Curated UI Component Archive",
     description:
       "A definitive catalog of premium components, templates, and UI kits built with shadcn/ui for modern web experiences.",
-    images: ["/opengraph-image.svg"],
+    images: ["/opengraph-image.png"],
   },
   alternates: {
     canonical: "https://shadcn-dir.vercel.app",
