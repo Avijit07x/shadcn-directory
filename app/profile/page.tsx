@@ -1,5 +1,6 @@
 import { ProfileGrid } from "@/components/ProfileGrid";
 import { ProfileStats } from "@/components/ProfileStats";
+import { getCachedData, setCachedData } from "@/lib/cache";
 import dbConnect from "@/lib/mongodb";
 import Resource, { IResource } from "@/models/Resource";
 import { getServerSession } from "next-auth";
@@ -18,7 +19,7 @@ export default async function ProfilePage() {
   }
 
   let resources: IResource[] = [];
-  let stats = {
+  const stats = {
     total: 0,
     approved: 0,
     pending: 0,
@@ -26,13 +27,21 @@ export default async function ProfilePage() {
   };
 
   try {
-    await dbConnect();
-    
-    const fetchedResources = await Resource.find({ 'addedBy.email': session.user.email })
-      .sort({ createdAt: -1 })
-      .lean();
+    const cacheKey = `profile:resources:${session.user.email}`;
+    const cachedResources = await getCachedData<IResource[]>(cacheKey);
+
+    if (cachedResources) {
+      resources = cachedResources;
+    } else {
+      await dbConnect();
       
-    resources = JSON.parse(JSON.stringify(fetchedResources));
+      const fetchedResources = await Resource.find({ 'addedBy.email': session.user.email })
+        .sort({ createdAt: -1 })
+        .lean();
+        
+      resources = JSON.parse(JSON.stringify(fetchedResources));
+      await setCachedData(cacheKey, resources, 60);
+    }
     
     stats.total = resources.length;
     stats.approved = resources.filter(r => r.status === 'approved').length;
@@ -40,7 +49,7 @@ export default async function ProfilePage() {
     stats.rejected = resources.filter(r => r.status === 'rejected').length;
 
   } catch (error) {
-    console.error("Failed to load user resources:", error);
+    console.error("Failed to load user resources. Is MongoDB/KV connected?", error);
   }
 
   return (
