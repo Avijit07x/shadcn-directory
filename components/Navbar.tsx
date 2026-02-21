@@ -31,6 +31,12 @@ export function Navbar() {
             <div className="font-mono text-xs sm:text-sm uppercase tracking-wider sm:tracking-[0.2em] font-bold truncate flex items-center gap-2">
               <Image src={logo} className="size-10" alt="Logo" width={100} height={100} />
               SHADCN <span className="hidden sm:inline">{"// DIRECTORY."}</span>
+              <span className="relative flex items-center">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-none bg-foreground/20" />
+                <span className="relative inline-flex items-center border border-foreground bg-foreground text-background px-1.5 py-0.5 text-[9px] font-bold tracking-widest">
+                  BETA
+                </span>
+              </span>
             </div>
           </Link>
         </div>

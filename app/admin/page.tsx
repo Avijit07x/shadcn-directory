@@ -16,50 +16,47 @@ interface PageProps {
 }
 
 export default async function AdminDashboard(props: PageProps) {
-  const session = await getServerSession(authOptions);
+  const [session, searchParams] = await Promise.all([
+    getServerSession(authOptions),
+    props.searchParams,
+  ]);
   
   if (!session?.user?.isAdmin) {
     redirect("/");
   }
 
-  const searchParams = await props.searchParams;
   const page = typeof searchParams.page === 'string' ? parseInt(searchParams.page, 10) : 1;
   const statusFilter = typeof searchParams.status === 'string' ? searchParams.status : 'all';
   const limit = 20;
+  const skip = (page - 1) * limit;
 
   await dbConnect();
-
-  const [totalCount, pendingCount, approvedCount, rejectedCount] = await Promise.all([
-    Resource.countDocuments({}),
-    Resource.countDocuments({ status: 'pending' }),
-    Resource.countDocuments({ status: 'approved' }),
-    Resource.countDocuments({ status: 'rejected' }),
-  ]);
-
-  const stats = {
-    total: totalCount,
-    pending: pendingCount,
-    approved: approvedCount,
-    rejected: rejectedCount,
-  };
-
-  const skip = (page - 1) * limit;
 
   const query: Record<string, any> = {};
   if (statusFilter !== 'all') {
     query.status = statusFilter;
   }
 
-  const [fetchedResources, totalFiltered] = await Promise.all([
+  const { getRedisClient } = await import("@/lib/cache");
+
+  const [statusCounts, fetchedResources, totalFiltered, redis] = await Promise.all([
+    Resource.aggregate([
+      { $group: { _id: "$status", count: { $sum: 1 } } }
+    ]),
     Resource.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
-    Resource.countDocuments(query)
+    Resource.countDocuments(query),
+    getRedisClient(),
   ]);
+
+  const stats = { total: 0, pending: 0, approved: 0, rejected: 0 };
+  for (const { _id, count } of statusCounts) {
+    if (_id in stats) stats[_id as keyof typeof stats] = count;
+    stats.total += count;
+  }
 
   let resources = JSON.parse(JSON.stringify(fetchedResources)) as IResource[];
   let totalPages = Math.ceil(totalFiltered / limit) || 1;
 
-  const { getRedisClient } = await import("@/lib/cache");
-  const redis = await getRedisClient();
   const queueItems = await redis.lrange("resource_queue", 0, -1);
   const parsedQueueItems: IResource[] = queueItems.map(itemStr => {
     try {

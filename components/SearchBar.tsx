@@ -17,9 +17,9 @@ export function SearchBar({ initialSearchQuery = "" }: SearchBarProps) {
     const delayDebounceFn = setTimeout(() => {
       if (query !== initialSearchQuery) {
         if (query) {
-          router.push(`/?search=${encodeURIComponent(query)}`);
+          router.push(`/?search=${encodeURIComponent(query)}`, { scroll: false });
         } else {
-          router.push(`/`);
+          router.push(`/`, { scroll: false });
         }
       }
     }, 400);

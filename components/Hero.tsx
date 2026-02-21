@@ -6,9 +6,12 @@ export function Hero() {
       <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[50vh] md:min-h-[60vh] 2xl:min-h-[25vh]">
         <div className="lg:col-span-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-border p-6 md:p-10 lg:p-14">
           <div className="flex items-center gap-3">
-            <div className="h-2 w-2 bg-foreground" />
+            <div className="h-2 w-2 bg-foreground animate-pulse" />
             <span className="font-mono text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-foreground">
               INDEX // 001
+            </span>
+            <span className="border border-foreground/30 bg-foreground/5 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-widest text-foreground/70">
+              Beta
             </span>
           </div>
           
