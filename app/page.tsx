@@ -18,14 +18,16 @@ export default async function Home(props: PageProps) {
 
   let resources: IResource[] = [];
   let totalPages = 1;
+  let totalResources = 0;
 
   try {
     const cacheKey = `resources:page-${page}:limit-${limit}:search-${searchQuery || 'all'}`;
-    const cachedData = await getCachedData<{ resources: IResource[], totalPages: number }>(cacheKey);
+    const cachedData = await getCachedData<{ resources: IResource[], totalPages: number, totalResources: number }>(cacheKey);
 
     if (cachedData) {
       resources = cachedData.resources;
       totalPages = cachedData.totalPages;
+      totalResources = cachedData.totalResources;
     } else {
       await dbConnect();
       
@@ -53,9 +55,10 @@ export default async function Home(props: PageProps) {
       
       resources = JSON.parse(JSON.stringify(fetchedResources));
       totalPages = Math.ceil(total / limit) || 1;
+      totalResources = total;
 
       // Cache the result for 60 seconds
-      await setCachedData(cacheKey, { resources, totalPages }, 60);
+      await setCachedData(cacheKey, { resources, totalPages, totalResources }, 60);
     }
   } catch (error) {
     console.error("Failed to load resources. Is MongoDB/KV connected?", error);
@@ -64,7 +67,7 @@ export default async function Home(props: PageProps) {
   return (
     <>
       <main className="flex-1 container mx-auto max-w-7xl px-4 min-h-screen">
-        <Hero />
+        <Hero totalResources={totalResources} />
         
         <SearchBar initialSearchQuery={searchQuery} />
 
@@ -74,7 +77,8 @@ export default async function Home(props: PageProps) {
             page={page} 
             totalPages={totalPages} 
             limit={limit} 
-            searchQuery={searchQuery} 
+            searchQuery={searchQuery}
+            totalResources={totalResources}
           />
         </div>
       </main>
