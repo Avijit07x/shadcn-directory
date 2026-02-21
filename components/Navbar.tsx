@@ -37,17 +37,11 @@ export function Navbar() {
 
         <div className="shrink-0 flex items-center justify-center h-full px-4 sm:px-6 gap-3">
           {session?.user?.isAdmin && (
-            <Button 
-              variant="outline" 
-              className="hidden sm:flex"
-              onClick={(e) => {
-                e.preventDefault();
-                router.push("/admin");
-                router.refresh();
-              }}
-            >
-              Admin Dashboard
-            </Button>
+            <Link href="/admin">
+              <Button variant="outline" className="hidden sm:flex" size="sm">
+                Admin Panel
+              </Button>
+            </Link>
           )}
 
           {session ? (

@@ -55,8 +55,36 @@ export default async function AdminDashboard(props: PageProps) {
     Resource.countDocuments(query)
   ]);
 
-  const resources = JSON.parse(JSON.stringify(fetchedResources)) as IResource[];
-  const totalPages = Math.ceil(totalFiltered / limit) || 1;
+  let resources = JSON.parse(JSON.stringify(fetchedResources)) as IResource[];
+  let totalPages = Math.ceil(totalFiltered / limit) || 1;
+
+  // Hybrid Flow: Merge Redis items into the Pending/All view
+  const { getRedisClient } = await import("@/lib/cache");
+  const redis = await getRedisClient();
+  const queueItems = await redis.lrange("resource_queue", 0, -1);
+  const parsedQueueItems: IResource[] = queueItems.map(itemStr => {
+    try {
+      const item = JSON.parse(itemStr);
+      return {
+        _id: item.id, // Treat Redis UUID as MongoDB _id for UI mapping
+        ...item,
+        status: "pending",
+      } as IResource;
+    } catch {
+      return null;
+    }
+  }).filter(Boolean) as IResource[];
+
+  stats.pending += parsedQueueItems.length;
+  stats.total += parsedQueueItems.length;
+
+  if (statusFilter === 'all' || statusFilter === 'pending') {
+    // Only inject on page 1 for simplicity of this hybrid approach
+    if (page === 1) {
+      resources = [...parsedQueueItems, ...resources].slice(0, limit);
+    }
+    totalPages = Math.ceil((totalFiltered + parsedQueueItems.length) / limit) || 1;
+  }
 
   const tabs = [
     { name: 'All', value: 'all' },

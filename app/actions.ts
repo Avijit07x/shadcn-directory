@@ -49,12 +49,14 @@ export async function addResourceAction(url: string) {
       description: metadata.description,
       image: metadata.image,
       domain: metadata.domain,
+      status: "pending",
       addedBy: {
         name: session.user.name || "Unknown User",
         email: session.user.email || "",
         image: session.user.image || "",
       },
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      id: crypto.randomUUID()
     };
 
     const { getRedisClient } = await import("@/lib/cache");
