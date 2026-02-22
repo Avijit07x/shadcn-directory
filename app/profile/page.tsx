@@ -1,18 +1,18 @@
 import { ProfileGrid } from "@/components/ProfileGrid";
 import { ProfileStats } from "@/components/ProfileStats";
+import { auth } from "@/lib/auth";
 import { getCachedData, setCachedData } from "@/lib/cache";
 import dbConnect from "@/lib/mongodb";
 import Resource, { IResource } from "@/models/Resource";
-import { getServerSession } from "next-auth";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export const metadata = {
   title: "My Profile",
 };
 
 export default async function ProfilePage() {
-  const session = await getServerSession(authOptions);
+  const session = await auth.api.getSession({ headers: await headers() });
 
   if (!session || !session.user || !session.user.email) {
     redirect("/");

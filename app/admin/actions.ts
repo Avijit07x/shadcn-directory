@@ -1,17 +1,17 @@
 "use server";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { auth } from "@/lib/auth";
 import { getRedisClient } from "@/lib/cache";
 import dbConnect from "@/lib/mongodb";
 import Resource from "@/models/Resource";
-import { getServerSession } from "next-auth/next";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 
 const isValidObjectId = (id: string) => /^[0-9a-fA-F]{24}$/.test(id);
 
 async function checkAdmin() {
-  const session = await getServerSession(authOptions);
-  return session?.user?.isAdmin;
+  const session = await auth.api.getSession({ headers: await headers() });
+  return session?.user?.role === "admin";
 }
 
 export async function updateResourceStatus(id: string, status: string) {

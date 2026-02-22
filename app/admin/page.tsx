@@ -1,10 +1,10 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { AdminMetrics } from "@/components/admin/AdminMetrics";
 import { AdminTable } from "@/components/admin/AdminTable";
 import { AdminTabs } from "@/components/admin/AdminTabs";
+import { auth } from "@/lib/auth";
 import dbConnect from "@/lib/mongodb";
 import Resource, { IResource } from "@/models/Resource";
-import { getServerSession } from "next-auth/next";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const metadata = {
@@ -17,11 +17,11 @@ interface PageProps {
 
 export default async function AdminDashboard(props: PageProps) {
   const [session, searchParams] = await Promise.all([
-    getServerSession(authOptions),
+    auth.api.getSession({ headers: await headers() }),
     props.searchParams,
   ]);
   
-  if (!session?.user?.isAdmin) {
+  if (!session?.user || session.user.role !== "admin") {
     redirect("/");
   }
 

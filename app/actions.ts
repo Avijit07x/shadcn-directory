@@ -1,11 +1,10 @@
 "use server";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { auth } from "@/lib/auth";
 import { fetchMetadata } from "@/lib/fetchMetadata";
 import dbConnect from "@/lib/mongodb";
 import { actionFallback, checkRateLimit } from "@/lib/rateLimit";
 import Resource from "@/models/Resource";
-import { getServerSession } from "next-auth";
 import { headers } from "next/headers";
 
 export async function addResourceAction(url: string) {
@@ -18,7 +17,7 @@ export async function addResourceAction(url: string) {
     if (!success) {
       return { error: "Too many requests. Please try again in a minute." };
     }
-    const session = await getServerSession(authOptions);
+    const session = await auth.api.getSession({ headers: headersList });
     
     if (!session || !session.user) {
       return { error: "Unauthorized. Please sign in to add a resource." };
