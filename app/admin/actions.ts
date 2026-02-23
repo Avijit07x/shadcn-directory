@@ -2,12 +2,13 @@
 
 import { auth } from "@/lib/auth";
 import { getRedisClient } from "@/lib/cache";
+import { sendApprovalEmail } from "@/lib/email";
 import dbConnect from "@/lib/mongodb";
 import Resource from "@/models/Resource";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
-const isValidObjectId = (id: string) => /^[0-9a-fA-F]{24}$/.test(id);
+const isValidObjectId = (id: string): boolean => /^[0-9a-fA-F]{24}$/.test(id);
 
 async function checkAdmin() {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -22,7 +23,14 @@ export async function updateResourceStatus(id: string, status: string) {
   await dbConnect();
   
   if (isValidObjectId(id)) {
-    await Resource.findByIdAndUpdate(id, { status });
+    if (status === "approved") {
+      const resource = await Resource.findByIdAndUpdate(id, { status }, { new: false });
+      if (resource && resource.addedBy?.email && resource.status !== "approved") {
+        sendApprovalEmail(resource.addedBy.email, resource.title || resource.url, resource.url).catch(console.error);
+      }
+    } else {
+      await Resource.findByIdAndUpdate(id, { status });
+    }
   } else {
     const redis = await getRedisClient();
     const itemsRaw = await redis.lrange("resource_queue", 0, -1);
@@ -37,6 +45,10 @@ export async function updateResourceStatus(id: string, status: string) {
             
             if (!existingResource) {
               await Resource.create({ ...dbResourceData, status });
+              
+              if (item.addedBy?.email) {
+                sendApprovalEmail(item.addedBy.email, item.title || item.url, item.url).catch(console.error);
+              }
             }
           }
           await redis.lrem("resource_queue", 1, itemStr);
@@ -96,7 +108,20 @@ export async function bulkUpdateResourceStatus(ids: string[], status: string) {
   const redisIds = ids.filter(id => !isValidObjectId(id));
 
   if (mongoIds.length > 0) {
-    await Resource.updateMany({ _id: { $in: mongoIds } }, { status });
+    if (status === "approved") {
+      // Find them first to get their emails before they are updated
+      const resourcesToApprove = await Resource.find({ _id: { $in: mongoIds }, status: { $ne: "approved" } });
+      await Resource.updateMany({ _id: { $in: mongoIds } }, { status });
+      
+      // Fire off emails for all newly approved resources
+      resourcesToApprove.forEach(resource => {
+        if (resource.addedBy?.email) {
+          sendApprovalEmail(resource.addedBy.email, resource.title || resource.url, resource.url).catch(console.error);
+        }
+      });
+    } else {
+      await Resource.updateMany({ _id: { $in: mongoIds } }, { status });
+    }
   }
 
   if (redisIds.length > 0) {
@@ -113,6 +138,10 @@ export async function bulkUpdateResourceStatus(ids: string[], status: string) {
             
             if (!existingResource) {
               await Resource.create({ ...dbResourceData, status });
+              
+              if (item.addedBy?.email) {
+                sendApprovalEmail(item.addedBy.email, item.title || item.url, item.url).catch(console.error);
+              }
             }
           }
           await redis.lrem("resource_queue", 1, itemStr);
