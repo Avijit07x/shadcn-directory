@@ -2,6 +2,7 @@
 
 import { IResource } from "@/models/Resource";
 import { ArrowDownRight } from "lucide-react";
+import Link from "next/link";
 
 interface ResourceCardProps {
   resource: IResource;
@@ -9,10 +10,8 @@ interface ResourceCardProps {
 
 export function ResourceCard({ resource }: ResourceCardProps) {
   return (
-    <a
-      href={resource.url}
-      target="_blank"
-      rel="noopener noreferrer"
+    <Link
+      href={`/resource/${(resource as any)._id}`}
       className="block group h-full relative focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground focus-visible:ring-offset-0"
     >
       <div className="h-full flex flex-col bg-background border-r border-b border-border transition-all duration-300 group-hover:bg-foreground group-hover:text-background group-hover:z-10 group-hover:-translate-y-1 group-hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.3)] relative">
@@ -73,6 +72,6 @@ export function ResourceCard({ resource }: ResourceCardProps) {
           </p>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
