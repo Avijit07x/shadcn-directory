@@ -13,8 +13,9 @@ export async function sendApprovalEmail(
   }
 
   try {
+    const fromEmail = process.env.EMAIL_FROM || "Shadcn Directory <onboarding@resend.dev>";
     const { data, error } = await resend.emails.send({
-      from: "Shadcn Directory <onboarding@resend.dev>", 
+      from: fromEmail, 
       to: [to],
       subject: "Your submission has been approved! 🎉",
       html: `

@@ -26,7 +26,7 @@ export async function updateResourceStatus(id: string, status: string) {
     if (status === "approved") {
       const resource = await Resource.findByIdAndUpdate(id, { status }, { new: false });
       if (resource && resource.addedBy?.email && resource.status !== "approved") {
-        sendApprovalEmail(resource.addedBy.email, resource.title || resource.url, resource.url).catch(console.error);
+        await sendApprovalEmail(resource.addedBy.email, resource.title || resource.url, resource.url).catch(console.error);
       }
     } else {
       await Resource.findByIdAndUpdate(id, { status });
@@ -47,7 +47,7 @@ export async function updateResourceStatus(id: string, status: string) {
               await Resource.create({ ...dbResourceData, status });
               
               if (item.addedBy?.email) {
-                sendApprovalEmail(item.addedBy.email, item.title || item.url, item.url).catch(console.error);
+                await sendApprovalEmail(item.addedBy.email, item.title || item.url, item.url).catch(console.error);
               }
             }
           }
@@ -114,11 +114,11 @@ export async function bulkUpdateResourceStatus(ids: string[], status: string) {
       await Resource.updateMany({ _id: { $in: mongoIds } }, { status });
       
       // Fire off emails for all newly approved resources
-      resourcesToApprove.forEach(resource => {
+      await Promise.all(resourcesToApprove.map(async (resource) => {
         if (resource.addedBy?.email) {
-          sendApprovalEmail(resource.addedBy.email, resource.title || resource.url, resource.url).catch(console.error);
+          await sendApprovalEmail(resource.addedBy.email, resource.title || resource.url, resource.url).catch(console.error);
         }
-      });
+      }));
     } else {
       await Resource.updateMany({ _id: { $in: mongoIds } }, { status });
     }
@@ -140,7 +140,7 @@ export async function bulkUpdateResourceStatus(ids: string[], status: string) {
               await Resource.create({ ...dbResourceData, status });
               
               if (item.addedBy?.email) {
-                sendApprovalEmail(item.addedBy.email, item.title || item.url, item.url).catch(console.error);
+                await sendApprovalEmail(item.addedBy.email, item.title || item.url, item.url).catch(console.error);
               }
             }
           }
